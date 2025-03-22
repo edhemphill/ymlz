@@ -1,5 +1,6 @@
 .{
-    .name = "ymlz",
+    .name = .ymlz,
+    .fingerprint = 0xee4d4f0285af93e,
     .version = "0.3.4",
     .dependencies = .{},
     .paths = .{

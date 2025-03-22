@@ -112,10 +112,10 @@ pub fn Ymlz(comptime Destination: type) type {
 
                     switch (actualTypeInfo) {
                         .pointer => {
-                            if (actualTypeInfo.pointer.size == .Slice and actualTypeInfo.pointer.child != u8) {
+                            if (actualTypeInfo.pointer.size == .slice and actualTypeInfo.pointer.child != u8) {
                                 const child_type_info = @typeInfo(actualTypeInfo.pointer.child);
 
-                                if (actualTypeInfo.pointer.size == .Slice and child_type_info == .@"struct") {
+                                if (actualTypeInfo.pointer.size == .slice and child_type_info == .@"struct") {
                                     const inner = @field(st, field.name);
 
                                     if (typeInfo == .optional) {
@@ -225,11 +225,11 @@ pub fn Ymlz(comptime Destination: type) type {
                     @field(destination, field.name) = try self.parseNumericExpression(field.type, raw_line, depth);
                 },
                 .pointer => {
-                    if (actual_type_info.pointer.size == .Slice and actual_type_info.pointer.child == u8) {
+                    if (actual_type_info.pointer.size == .slice and actual_type_info.pointer.child == u8) {
                         @field(destination, field.name) = try self.parseStringExpression(raw_line, depth, false);
-                    } else if (actual_type_info.pointer.size == .Slice and (actual_type_info.pointer.child == []const u8 or actual_type_info.pointer.child == []u8)) {
+                    } else if (actual_type_info.pointer.size == .slice and (actual_type_info.pointer.child == []const u8 or actual_type_info.pointer.child == []u8)) {
                         @field(destination, field.name) = try self.parseStringArrayExpression(actual_type_info.pointer.child, depth + 1);
-                    } else if (actual_type_info.pointer.size == .Slice and @typeInfo(actual_type_info.pointer.child) != .pointer) {
+                    } else if (actual_type_info.pointer.size == .slice and @typeInfo(actual_type_info.pointer.child) != .pointer) {
                         @field(destination, field.name) = try self.parseArrayExpression(actual_type_info.pointer.child, depth + 1);
                     } else {
                         @panic("unexpected pointer type recieved - " ++ @typeName(field.type) ++ "\n");
